@@ -1,0 +1,182 @@
+---
+title: "Instacart Recommender Lab"
+output: html_notebook
+---
+
+```{r}
+library("ggplot2")
+library("recommenderlab")
+```
+
+# import datasets
+```{r}
+df_train <- read.csv("user_to_product_rating_train.csv")
+head(df_train)
+```
+
+# This convert the datasets to binary
+```{r}
+ratings_matrix <- as(df_train[,c(1,2)], "binaryRatingMatrix")
+ratings_matrix
+```
+
+# The following image shows sparsity of the matrix:
+```{r}
+image(ratings_matrix[1:100, 1:100], main = "Binary rating matrix")
+```
+# Selecting the most relevant data
+```{r}
+train_matrix <- ratings_matrix[rowCounts(ratings_matrix) >= 305, colCounts(ratings_matrix) >= 3500]
+train_matrix
+```
+
+# plotting sparsity of the relevant data
+```{r}
+image(train_matrix[1:100, 1:100], main = "Binary rating matrix")
+```
+# Sparsity of the datasets
+```{r}
+(1-(103478/(990*583)))*100
+```
+```{r}
+# this help us in determing the given parameter in evaluationScheme fuction
+min(rowCounts(train_matrix)) # it used to determine given
+```
+
+# creating cross validation for the datasets
+```{r}
+eval_sets <- evaluationScheme(data = train_matrix, method = "cross-validation", k = 3, given = 12)
+eval_sets
+```
+
+```{r}
+getData(eval_sets, "train")
+getData(eval_sets, "known")
+getData(eval_sets, "unknown")
+sapply(eval_sets@runsTrain, length)
+```
+
+```{r}
+# model_to_evaluate <- "IBCF"
+# model_parameters <- NULL
+# eval_recommender <- Recommender(data = getData(eval_sets, "train"), method = model_to_evaluate, parameter = model_parameters)
+# eval_recommender
+```
+
+```{r}
+# recom <- predict(eval_recommender, getData(eval_sets, "known"), n=5 )
+# recom
+```
+```{r}
+# as(recom, "list")
+```
+```{r}
+# items_to_recommend <- 10
+# eval_prediction <- predict(object = eval_recommender, newdata = getData(eval_sets, "known"), n = items_to_recommend, type ="ratings")
+# class(eval_prediction)
+```
+
+# Popular Model
+```{r}
+results <- evaluate(x = eval_sets, method = "POPULAR", type = "topNList", n=c(1,3,5,10,15,20))
+results
+```
+# Popular Model Performance
+```{r}
+avg(results)
+```
+```{r}
+columns_to_sum <- c("TP", "FP", "FN", "TN")
+indices_summed <- Reduce("+", getConfusionMatrix(results))[, columns_to_sum]
+head(indices_summed)
+```
+
+# AUC for Popular Model
+```{r}
+plot(results, annotate=TRUE)
+```
+# Precision and recall for Popular Model
+```{r}
+plot(results, "prec/rec", annotate=TRUE)
+```
+
+# Compare Multiple Algorithms
+```{r}
+Algorithms <- list(
+"Random Items" = list(name="RANDOM", param=NULL),
+"Popular Items" = list(name="POPULAR", param=NULL),
+"User-Based CF" = list(name="UBCF", param=list(nn=25, method="Jaccard")),
+"Item-Based CF" = list(name="IBCF", param=list(k=30, method="Jaccard", alpha=0.5, normalize_sim_matrix=FALSE)),
+"Re-recommends Items" = list(name="RERECOMMEND", param=list()),
+"Alternating Least Squares" = list(name="ALS_implicit", param=list(lambda=0.1, alpha=10, n_factors=10, n_iterations=10)),
+"Association Rules" = list(name="AR", param=list(support=0.1, confidence=0.8, maxlen=3))
+)
+```
+
+```{r}
+# rec_mod <- recommenderRegistry$get_entries(dataType = "binaryRatingMatrix")
+# rec_mod
+```
+```{r}
+# rec_mod$POPULAR_binaryRatingMatrix$parameters
+```
+
+
+```{r}
+com_results <- evaluate(x = eval_sets, method = Algorithms, type = "topNList", n=c(1,3,5,10,15,20))
+com_results
+```
+
+# Results of the Multiple Algorithms
+```{r}
+avg(com_results)
+```
+
+# Auc for Multiple Algorithms
+```{r}
+plot(com_results, annotate=c(3,2,6,1), legend="topright")
+```
+
+```{r}
+plot(com_results, "prec/rec", annotate=c(3,2,6,1), legend="bottomright")
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
