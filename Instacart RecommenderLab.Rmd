@@ -10,7 +10,7 @@ library("recommenderlab")
 
 # import datasets
 ```{r}
-df_train <- read.csv("user_to_product_rating_train.csv")
+df_train <- read.csv("datasets/user_to_product_rating_train.csv")
 head(df_train)
 ```
 
@@ -164,35 +164,27 @@ title("ROC curve")
 plot(list_results, "prec/rec", annotate = 5, legend = "bottomleft") 
 title("Precision - Recall")
 ```
-
+# Building a recommedation on UBCF Algorithm
 ```{r}
-
+UBCF_recommender <- Recommender(data = getData(eval_sets, "train"), method ="UBCF", parameter = list(method = "Jaccard", nn=50))
+UBCF_recommender
 ```
 
 ```{r}
-
+UBCF_prediction <- predict(object = UBCF_recommender, newdata =getData(eval_sets, "known"), n = 30, type = "topNList")
+UBCF_prediction
 ```
 
 ```{r}
+UBCF_recommendation <- sapply(UBCF_prediction@items, function(x){colnames(getData(eval_sets, "unknown"))[x]})
+```
 
+# Recommendation for user 100574
+```{r}
+UBCF_recommendation[1:5, "100574"]
 ```
 
 ```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
+aaa <- subset(df_train, user_id==100574)
+head(aaa)
 ```
