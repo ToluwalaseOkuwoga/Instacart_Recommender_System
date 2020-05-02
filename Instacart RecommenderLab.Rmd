@@ -100,7 +100,7 @@ plot(results, annotate=TRUE)
 plot(results, "prec/rec", annotate=TRUE)
 ```
 
-# Compare Multiple Algorithms
+# Comparing Multiple Algorithms
 ```{r}
 Algorithms <- list(
 "Random Items" = list(name="RANDOM", param=NULL),
@@ -127,26 +127,42 @@ com_results <- evaluate(x = eval_sets, method = Algorithms, type = "topNList", n
 com_results
 ```
 
-# Results of the Multiple Algorithms
+# Algorithms Accuracy Using Metrics
 ```{r}
 avg(com_results)
 ```
 
-# Auc for Multiple Algorithms
+# Algorithms Accuracy Using Plots
 ```{r}
 plot(com_results, annotate=c(3,2,6,1), legend="topright")
+title("ROC Curve")
 ```
 
 ```{r}
 plot(com_results, "prec/rec", annotate=c(3,2,6,1), legend="bottomright")
+title("Precision-Recall")
+```
+# Parameter tunning for UBCF
+```{r}
+vector_nn <- c(5, 10, 20, 30, 40, 50)
+
+models_to_optimize <- lapply(vector_nn, function(k){list(name = "UBCF", param = list(method = "Jaccard", nn = k))})
+names(models_to_optimize) <- paste0("UBCF_nn_", vector_nn)
 ```
 
 ```{r}
-
+n_recommendations <- c(1, 5, seq(10, 100, 10))
+list_results <- evaluate(x = eval_sets, method = models_to_optimize, type = "topNList", n= n_recommendations)
+```
+# UBCF Accuracy Using PLots
+```{r}
+plot(list_results, annotate = 5, legend = "topleft") 
+title("ROC curve")
 ```
 
 ```{r}
-
+plot(list_results, "prec/rec", annotate = 5, legend = "bottomleft") 
+title("Precision - Recall")
 ```
 
 ```{r}
