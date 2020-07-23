@@ -1,0 +1,13 @@
+name: instacart_idaf
+title: instacart_idaf
+username:
+account: instacart
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2440862
+bundleId: 3273479
+url: https://instacart.shinyapps.io/instacart_idaf/
+when: 1592246793.31538
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: past_orders_matrix2.rds|user_list.rds
