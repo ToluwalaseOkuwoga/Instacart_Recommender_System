@@ -1,23 +1,23 @@
 library(shiny)
 library(tidyverse)
 library(Matrix)
-
+library(shinythemes)
 
 # ui.R
 
 item_list <- readRDS("item_list.rds")
-ui <- fluidPage(
+ui <- fluidPage(theme = shinytheme("superhero"),
     
     # App title ----
-    titlePanel(h1("Recommender System For Instacart Online Grocery Store", align = "center")),
-    h3("A Capstone Project Presented to Information and Data Analytics Foundation", align = "center"),
+    titlePanel(h2("Recommender System For Instacart Online Grocery Store", align = "center")),
+    h5("A Capstone Project Presented to Information and Data Analytics Foundation", align = "center"),
     
     fluidRow(
         
         # Input selection
         column(6, 
                # INPUT
-               h3("Purchase item(s) from the store, by selecting from the dropdown list"),    
+               h4("Purchase item(s) from the store, by selecting from the dropdown list"),    
                wellPanel(
                    #selectInput("user", "User", choices = c("", user_list)),
                    selectInput("input_item1", "Item 1", choices = c("", item_list)),
@@ -36,7 +36,7 @@ ui <- fluidPage(
         
         # Output table
         column(6,
-               h3("Because you purchased those item(s), we recommend these:"),     
+               h3("Because you purchased these item(s), we recommend the following:"),     
                tableOutput("item_recom")
         )
     ),
@@ -44,13 +44,13 @@ ui <- fluidPage(
     # COMMENTS    
     fluidRow(                                    
         column(12,
-               p("Designed by Okuwoga Toluwalase, Okechukwu Princewill, Olanayo Olatunde.",
+               h6("Designed by Okuwoga Toluwalase, Okechukwu Princewill, Olanayo Olatunde.",
                  "For the full code, please visit the team", 
                  a("GitHub Page", href = "https://github.com/ToluwalaseOkuwoga/Instacart-Recommender-System", target="_blank"))
         ),
         
         column(12,
-               p("The Instacart Online Grocery Shopping Dataset 2017, Accessed from",
+               h6("The Instacart Online Grocery Shopping Dataset 2017, Accessed from",
                  a("Here", href = "https://www.instacart.com/datasets/grocery-shopping-2017"))
         )
     )
