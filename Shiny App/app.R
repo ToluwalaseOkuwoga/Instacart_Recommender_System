@@ -44,7 +44,7 @@ ui <- fluidPage(theme = shinytheme("superhero"),
     # COMMENTS    
     fluidRow(                                    
         column(12,
-               h6("Designed by Okuwoga Toluwalase, Okechukwu Princewill, Olanayo Olatunde.",
+               h6("Designed by Okuwoga Toluwalase, Olanayo Olatunde.",
                  "For the full code, please visit the team", 
                  a("GitHub Page", href = "https://github.com/ToluwalaseOkuwoga/Instacart-Recommender-System", target="_blank"))
         ),
